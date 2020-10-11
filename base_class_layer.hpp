@@ -10,31 +10,19 @@ class Layer
 {
  public:
 
-  virtual void Reset()
-  {
-    std::cout<<"Reset in Layer";
-  }
+  virtual void Reset()=0;
 
   virtual void Forward(const InputDataType&,
-                       OutputDataType&)
-  {
-    std::cout<<"Forward in Layer";
-  }
+                       OutputDataType&)=0;
 
   virtual void Backward(const InputDataType&,
-                const InputDataType&,
-                OutputDataType&)
-  {
-    std::cout<<"Backward in Layer";
-  }
-
+                        const InputDataType&,
+                        OutputDataType&)=0;
+ 
   virtual void Gradient(const InputDataType&,
-                const InputDataType&,
-                OutputDataType&)
-  {
-    std::cout<<"Gradient in Layer";
-  }
-
+                        const InputDataType&,
+                        OutputDataType&)=0;
+  
 };
 
 }

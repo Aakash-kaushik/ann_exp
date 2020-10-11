@@ -76,8 +76,9 @@ class Linear : Layer<InputDataType, OutputDataType>
    * @param input Input data used for evaluating the specified function.
    * @param output Resulting output activation.
    */
-  template<typename eT>
-  void Forward(const arma::Mat<eT>& input, arma::Mat<eT>& output);
+ 
+  void Forward(const InputDataType& input,
+               OutputDataType& output);
 
   /**
    * Ordinary feed backward pass of a neural network, calculating the function
@@ -88,10 +89,10 @@ class Linear : Layer<InputDataType, OutputDataType>
    * @param gy The backpropagated error.
    * @param g The calculated gradient.
    */
-  template<typename eT>
-  void Backward(const arma::Mat<eT>& /* input */,
-                const arma::Mat<eT>& gy,
-                arma::Mat<eT>& g);
+
+  void Backward(const InputDataType& /* input */,
+                const InputDataType& gy,
+                OutputDataType& g);
 
   /*
    * Calculate the gradient using the output delta and the input activation.
@@ -100,10 +101,10 @@ class Linear : Layer<InputDataType, OutputDataType>
    * @param error The calculated error.
    * @param gradient The calculated gradient.
    */
-  template<typename eT>
-  void Gradient(const arma::Mat<eT>& input,
-                const arma::Mat<eT>& error,
-                arma::Mat<eT>& gradient);
+
+  void Gradient(const InputDataType& input,
+                const InputDataType& error,
+                OutputDataType& gradient);
 
   //! Get the parameters.
   OutputDataType const& Parameters() const { return weights; }
