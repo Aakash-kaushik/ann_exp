@@ -140,16 +140,17 @@ void Linear<InputDataType, OutputDataType, RegularizerType>::Gradient(
   regularizer.Evaluate(weights, gradient);
 }
 
-template<typename InputDataType, typename OutputDataType,
-    typename RegularizerType>
-template<typename Archive>
-void Linear<InputDataType, OutputDataType, RegularizerType>::serialize(
-    Archive& ar, const unsigned int /* version */)
-{
-  ar & BOOST_SERIALIZATION_NVP(inSize);
-  ar & BOOST_SERIALIZATION_NVP(outSize);
-  ar & BOOST_SERIALIZATION_NVP(weights);
-}
+
+//template<typename InputDataType, typename OutputDataType,
+//    typename RegularizerType>
+//template<typename Archive>
+//void Linear<InputDataType, OutputDataType, RegularizerType>::serialize(
+//   Archive& ar, const unsigned int /* version */)
+//{
+//  ar & BOOST_SERIALIZATION_NVP(inSize);
+//  ar & BOOST_SERIALIZATION_NVP(outSize);
+//  ar & BOOST_SERIALIZATION_NVP(weights);
+//}
 
 } // namespace ann
 } // namespace mlpack

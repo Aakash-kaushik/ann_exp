@@ -16,6 +16,8 @@
 #include <mlpack/prereqs.hpp>
 #include <mlpack/methods/ann/regularizer/no_regularizer.hpp>
 
+#include "./base_class_layer.hpp"
+
 namespace mlpack {
 namespace ann /** Artificial Neural Network. */ {
 
@@ -33,7 +35,7 @@ template <
     typename OutputDataType = arma::mat,
     typename RegularizerType = NoRegularizer
 >
-class Linear
+class Linear : Layer<double>
 {
  public:
   //! Create the Linear object.
@@ -153,8 +155,9 @@ class Linear
   /**
    * Serialize the layer
    */
-  template<typename Archive>
-  void serialize(Archive& ar, const unsigned int /* version */);
+  
+  //template<typename Archive>
+  //void serialize(Archive& ar, const unsigned int /* version */);
 
  private:
   //! Locally-stored number of input units.

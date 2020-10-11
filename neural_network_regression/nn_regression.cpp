@@ -1,5 +1,4 @@
 #include <mlpack/prereqs.hpp>
-#include <mlpack/core.hpp>
 #include <mlpack/methods/ann/loss_functions/mean_squared_error.hpp>
 #include "../linear.hpp"
 #include <mlpack/core/data/split_data.hpp>
