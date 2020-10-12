@@ -15,13 +15,13 @@
 // In case it hasn't been included yet.
 #include "ffn.hpp"
 
-#include <mlpack/methods/ann/visitor/forward_visitor.hpp>
-#include <mlpack/methods/ann/visitor/backward_visitor.hpp>
-#include <mlpack/methods/ann/visitor/deterministic_set_visitor.hpp>
-#include <mlpack/methods/ann/visitor/gradient_set_visitor.hpp>
-#include <mlpack/methods/ann/visitor/gradient_visitor.hpp>
-#include <mlpack/methods/ann/visitor/set_input_height_visitor.hpp>
-#include <mlpack/methods/ann/visitor/set_input_width_visitor.hpp>
+#include "visitor/forward_visitor.hpp"
+#include "visitor/backward_visitor.hpp"
+#include "visitor/deterministic_set_visitor.hpp"
+#include "visitor/gradient_set_visitor.hpp"
+#include "visitor/gradient_visitor.hpp"
+#include "visitor/set_input_height_visitor.hpp"
+#include "visitor/set_input_width_visitor.hpp"
 
 #include <boost/serialization/variant.hpp>
 
@@ -537,6 +537,7 @@ void FFN<OutputLayerType, InitializationRuleType,
       network[network.size() - 1]);
 }
 
+/*
 template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>
 template<typename Archive>
@@ -592,7 +593,7 @@ void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::serialize(
     ResetDeterministic();
   }
 }
-
+*/
 template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>
 void FFN<OutputLayerType, InitializationRuleType,

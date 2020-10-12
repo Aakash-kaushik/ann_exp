@@ -40,6 +40,7 @@ class Linear : Layer<InputDataType, OutputDataType>
  public:
   //! Create the Linear object.
   Linear();
+  ~Linear(){}
 
   /**
    * Create the Linear layer object using the specified number of units.

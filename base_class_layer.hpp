@@ -22,6 +22,8 @@ class Layer
   virtual void Gradient(const InputDataType&,
                         const InputDataType&,
                         OutputDataType&)=0;
+
+  virtual ~Layer(){}
   
 };
 

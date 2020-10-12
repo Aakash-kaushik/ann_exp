@@ -14,16 +14,17 @@
 #define MLPACK_METHODS_ANN_FFN_HPP
 
 #include <mlpack/prereqs.hpp>
-
-#include <mlpack/methods/ann/visitor/delete_visitor.hpp>
-#include <mlpack/methods/ann/visitor/delta_visitor.hpp>
-#include <mlpack/methods/ann/visitor/output_height_visitor.hpp>
-#include <mlpack/methods/ann/visitor/output_parameter_visitor.hpp>
-#include <mlpack/methods/ann/visitor/output_width_visitor.hpp>
-#include <mlpack/methods/ann/visitor/reset_visitor.hpp>
-#include <mlpack/methods/ann/visitor/weight_size_visitor.hpp>
-#include <mlpack/methods/ann/visitor/copy_visitor.hpp>
-#include <mlpack/methods/ann/visitor/loss_visitor.hpp>
+#include "base_class_layer.hpp" 
+#include "linear.hpp"
+#include "visitor/delete_visitor.hpp"
+#include "visitor/delta_visitor.hpp"
+#include "visitor/output_height_visitor.hpp"
+#include "visitor/output_parameter_visitor.hpp"
+#include "visitor/output_width_visitor.hpp"
+#include "visitor/reset_visitor.hpp"
+#include "visitor/weight_size_visitor.hpp"
+#include "visitor/copy_visitor.hpp"
+#include "visitor/loss_visitor.hpp"
 
 #include <mlpack/methods/ann/init_rules/network_init.hpp>
 
@@ -450,7 +451,7 @@ class FFN
   bool reset;
 
   //! Locally-stored model modules.
-  std::vector<LayerTypes<CustomLayers...> > network;
+  std::vector<Layer*> network;
 
   //! The matrix of data points (predictors).
   arma::mat predictors;
@@ -511,6 +512,7 @@ class FFN
   //! Locally-stored copy visitor
   CopyVisitor<CustomLayers...> copyVisitor;
 
+  /*
   // The GAN class should have access to internal members.
   template<
     typename Model,
@@ -519,11 +521,12 @@ class FFN
     typename PolicyType
   >
   friend class GAN;
+  */
 }; // class FFN
 
 } // namespace ann
 } // namespace mlpack
-
+/*
 //! Set the serialization version of the FFN class.  Multiple template arguments
 //! makes this ugly...
 namespace boost {
@@ -540,7 +543,7 @@ struct version<
 
 } // namespace serialization
 } // namespace boost
-
+*/
 // Include implementation.
 #include "ffn_impl.hpp"
 
