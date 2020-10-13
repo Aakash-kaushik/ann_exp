@@ -159,7 +159,7 @@ void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Forward(
     ResetParameters();
 
   Forward(inputs);
-  results = boost::apply_visitor(outputParameterVisitor, network.back());
+  results = network.back()->OutputParameter();
 }
 
 template<typename OutputLayerType, typename InitializationRuleType,
@@ -171,19 +171,18 @@ void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Forward(
     const size_t begin,
     const size_t end)
 {
-  boost::apply_visitor(ForwardVisitor(inputs,
-      boost::apply_visitor(outputParameterVisitor, network[begin])),
+  boost::apply_visitor(ForwardVisitor(inputs,(network[begin]->OutputParameter())),
       network[begin]);
 
   for (size_t i = 1; i < end - begin + 1; ++i)
   {
-    boost::apply_visitor(ForwardVisitor(boost::apply_visitor(
-        outputParameterVisitor, network[begin + i - 1]),
-        boost::apply_visitor(outputParameterVisitor, network[begin + i])),
+    boost::apply_visitor(ForwardVisitor(
+        (network[begin + i - 1]->OutputParameter()),
+        (network[begin + i]->OutputParameter())),
         network[begin + i]);
   }
 
-  results = boost::apply_visitor(outputParameterVisitor, network[end]);
+  results = (network[end]->OutputParameter());
 }
 
 template<typename OutputLayerType, typename InitializationRuleType,
@@ -194,16 +193,15 @@ double FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Backward(
     const TargetsType& targets,
     GradientsType& gradients)
 {
-  double res = outputLayer.Forward(boost::apply_visitor(
-      outputParameterVisitor, network.back()), targets);
+  double res = outputLayer.Forward((
+      network.back()->OutputParameter()), targets);
 
   for (size_t i = 0; i < network.size(); ++i)
   {
     res += boost::apply_visitor(lossVisitor, network[i]);
   }
 
-  outputLayer.Backward(boost::apply_visitor(outputParameterVisitor,
-      network.back()), targets, error);
+  outputLayer.Backward((network.back()->OutputParameter()), targets, error);
 
   gradients = arma::zeros<arma::mat>(parameter.n_rows, parameter.n_cols);
 
@@ -230,8 +228,7 @@ void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Predict(
 
   arma::mat resultsTemp;
   Forward(arma::mat(predictors.colptr(0), predictors.n_rows, 1, false, true));
-  resultsTemp = boost::apply_visitor(outputParameterVisitor,
-      network.back()).col(0);
+  resultsTemp = (network.back()->OutputParameter()).col(0);
 
   results = arma::mat(resultsTemp.n_elem, predictors.n_cols);
   results.col(0) = resultsTemp.col(0);
@@ -240,8 +237,7 @@ void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Predict(
   {
     Forward(arma::mat(predictors.colptr(i), predictors.n_rows, 1, false, true));
 
-    resultsTemp = boost::apply_visitor(outputParameterVisitor,
-        network.back());
+    resultsTemp = (network.back()->OutputParameter());
     results.col(i) = resultsTemp.col(0);
   }
 }
@@ -263,8 +259,7 @@ double FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Evaluate(
 
   Forward(predictors);
 
-  double res = outputLayer.Forward(boost::apply_visitor(
-      outputParameterVisitor, network.back()), responses);
+  double res = outputLayer.Forward((network.back()->OutputParameter()), responses);
 
   for (size_t i = 0; i < network.size(); ++i)
   {
@@ -305,7 +300,7 @@ double FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Evaluate(
 
   Forward(predictors.cols(begin, begin + batchSize - 1));
   double res = outputLayer.Forward(
-      boost::apply_visitor(outputParameterVisitor, network.back()),
+      (network.back()->OutputParameter()),
       responses.cols(begin, begin + batchSize - 1));
 
   for (size_t i = 0; i < network.size(); ++i)
@@ -366,7 +361,7 @@ EvaluateWithGradient(const arma::mat& /* parameters */,
 
   Forward(predictors.cols(begin, begin + batchSize - 1));
   double res = outputLayer.Forward(
-      boost::apply_visitor(outputParameterVisitor, network.back()),
+      (network.back()->OutputParameter()),
       responses.cols(begin, begin + batchSize - 1));
 
   for (size_t i = 0; i < network.size(); ++i)
@@ -375,7 +370,7 @@ EvaluateWithGradient(const arma::mat& /* parameters */,
   }
 
   outputLayer.Backward(
-      boost::apply_visitor(outputParameterVisitor, network.back()),
+      (network.back()->OutputParameter()),
       responses.cols(begin, begin + batchSize - 1),
       error);
 
@@ -447,7 +442,7 @@ void FFN<OutputLayerType, InitializationRuleType,
          CustomLayers...>::Forward(const InputType& input)
 {
   boost::apply_visitor(ForwardVisitor(input,
-      boost::apply_visitor(outputParameterVisitor, network.front())),
+      (network.front()->OutputParameter())),
       network.front());
 
   if (!reset)
@@ -474,9 +469,8 @@ void FFN<OutputLayerType, InitializationRuleType,
       boost::apply_visitor(SetInputHeightVisitor(height), network[i]);
     }
 
-    boost::apply_visitor(ForwardVisitor(boost::apply_visitor(
-        outputParameterVisitor, network[i - 1]),
-        boost::apply_visitor(outputParameterVisitor, network[i])), network[i]);
+    boost::apply_visitor(ForwardVisitor((network[i - 1]->OutputParameter()),
+        (network[i]->OutputParameter())), network[i]);
 
     if (!reset)
     {
@@ -502,16 +496,14 @@ template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>
 void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Backward()
 {
-  boost::apply_visitor(BackwardVisitor(boost::apply_visitor(
-      outputParameterVisitor, network.back()), error,
-      boost::apply_visitor(deltaVisitor, network.back())), network.back());
+  boost::apply_visitor(BackwardVisitor((network.back()->OutputParameter()), error,
+      (network.back()->Delta())), network.back());
 
   for (size_t i = 2; i < network.size(); ++i)
   {
-    boost::apply_visitor(BackwardVisitor(boost::apply_visitor(
-        outputParameterVisitor, network[network.size() - i]),
-        boost::apply_visitor(deltaVisitor, network[network.size() - i + 1]),
-        boost::apply_visitor(deltaVisitor, network[network.size() - i])),
+    boost::apply_visitor(BackwardVisitor((network[network.size() - i]->OutputParameter()),
+        (network[network.size() - i + 1]->Delta()),
+        (network[network.size() - i]->Delta())),
         network[network.size() - i]);
   }
 }
@@ -523,17 +515,15 @@ void FFN<OutputLayerType, InitializationRuleType,
          CustomLayers...>::Gradient(const InputType& input)
 {
   boost::apply_visitor(GradientVisitor(input,
-      boost::apply_visitor(deltaVisitor, network[1])), network.front());
+      (network[1]->Delta())), network.front());
 
   for (size_t i = 1; i < network.size() - 1; ++i)
   {
-    boost::apply_visitor(GradientVisitor(boost::apply_visitor(
-        outputParameterVisitor, network[i - 1]),
-        boost::apply_visitor(deltaVisitor, network[i + 1])), network[i]);
+    boost::apply_visitor(GradientVisitor((network[i - 1]->OutputParameter()),
+        (network[i + 1]->Delta())), network[i]);
   }
 
-  boost::apply_visitor(GradientVisitor(boost::apply_visitor(
-      outputParameterVisitor, network[network.size() - 2]), error),
+  boost::apply_visitor(GradientVisitor((network[network.size() - 2]->OutputParameter()), error),
       network[network.size() - 1]);
 }
 

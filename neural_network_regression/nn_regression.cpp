@@ -11,6 +11,7 @@ using namespace mlpack;
 using namespace mlpack::ann;
 using namespace ens;
 
+
 double MSE(arma::mat& pred, arma::mat& Y)
 {
   return metric::SquaredEuclideanDistance::Evaluate(pred, Y) / (Y.n_elem);

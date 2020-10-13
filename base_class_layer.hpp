@@ -10,6 +10,8 @@ class Layer
 {
  public:
 
+  virtual ~Layer(){}
+
   virtual void Reset()=0;
 
   virtual void Forward(const InputDataType&,
@@ -23,7 +25,18 @@ class Layer
                         const InputDataType&,
                         OutputDataType&)=0;
 
-  virtual ~Layer(){}
+  virtual OutputDataType const& OutputParameter() const=0;
+
+  virtual OutputDataType& OutputParameter()=0;
+
+  virtual OutputDataType const& Delta() const=0;
+  
+  virtual OutputDataType& Delta()=0;
+
+  
+
+
+
   
 };
 

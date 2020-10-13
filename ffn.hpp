@@ -17,9 +17,9 @@
 #include "base_class_layer.hpp" 
 #include "linear.hpp"
 #include "visitor/delete_visitor.hpp"
-#include "visitor/delta_visitor.hpp"
+//#include "visitor/delta_visitor.hpp"
 #include "visitor/output_height_visitor.hpp"
-#include "visitor/output_parameter_visitor.hpp"
+//#include "visitor/output_parameter_visitor.hpp"
 #include "visitor/output_width_visitor.hpp"
 #include "visitor/reset_visitor.hpp"
 #include "visitor/weight_size_visitor.hpp"
@@ -451,7 +451,7 @@ class FFN
   bool reset;
 
   //! Locally-stored model modules.
-  std::vector<Layer*> network;
+  std::vector<Layer* > network;
 
   //! The matrix of data points (predictors).
   arma::mat predictors;
@@ -470,10 +470,10 @@ class FFN
 
   
   //! Locally-stored delta visitor.
-  DeltaVisitor deltaVisitor;
+  //DeltaVisitor deltaVisitor;
 
   //! Locally-stored output parameter visitor.
-  OutputParameterVisitor outputParameterVisitor;
+  //OutputParameterVisitor outputParameterVisitor;
 
   //! Locally-stored weight size visitor.
   WeightSizeVisitor weightSizeVisitor;
