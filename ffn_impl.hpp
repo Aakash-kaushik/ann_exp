@@ -198,7 +198,7 @@ double FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Backward(
 
   for (size_t i = 0; i < network.size(); ++i)
   {
-    res += boost::apply_visitor(lossVisitor, network[i]);
+    res += network[i]->Loss();
   }
 
   outputLayer.Backward((network.back()->OutputParameter()), targets, error);
@@ -263,7 +263,7 @@ double FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Evaluate(
 
   for (size_t i = 0; i < network.size(); ++i)
   {
-    res += boost::apply_visitor(lossVisitor, network[i]);
+    res += network[i]->Loss();
   }
 
   return res;
@@ -305,7 +305,7 @@ double FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Evaluate(
 
   for (size_t i = 0; i < network.size(); ++i)
   {
-    res += boost::apply_visitor(lossVisitor, network[i]);
+    res += network[i]->Loss();
   }
 
   return res;
@@ -366,7 +366,7 @@ EvaluateWithGradient(const arma::mat& /* parameters */,
 
   for (size_t i = 0; i < network.size(); ++i)
   {
-    res += boost::apply_visitor(lossVisitor, network[i]);
+    res += network[i]->Loss();
   }
 
   outputLayer.Backward(
@@ -447,14 +447,14 @@ void FFN<OutputLayerType, InitializationRuleType,
 
   if (!reset)
   {
-    if (boost::apply_visitor(outputWidthVisitor, network.front()) != 0)
+    if (network.front()->OutputWidth() != 0)
     {
-      width = boost::apply_visitor(outputWidthVisitor, network.front());
+      width = network.front()->OutputWidth();
     }
 
-    if (boost::apply_visitor(outputHeightVisitor, network.front()) != 0)
+    if (network.front()->OutputHeight() != 0)
     {
-      height = boost::apply_visitor(outputHeightVisitor, network.front());
+      height = network.front()->OutputHeight();
     }
   }
 
@@ -475,15 +475,15 @@ void FFN<OutputLayerType, InitializationRuleType,
     if (!reset)
     {
       // Get the output width.
-      if (boost::apply_visitor(outputWidthVisitor, network[i]) != 0)
+      if (network[i]->OutputWidth() != 0)
       {
-        width = boost::apply_visitor(outputWidthVisitor, network[i]);
+        width = network[i]->OutputWidth();
       }
 
       // Get the output height.
-      if (boost::apply_visitor(outputHeightVisitor, network[i]) != 0)
+      if (network[i]->OutputHeight() != 0)
       {
-        height = boost::apply_visitor(outputHeightVisitor, network[i]);
+        height = network[i]->OutputHeight();
       }
     }
   }
@@ -632,7 +632,7 @@ FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::FFN(
   {
     this->network.push_back(boost::apply_visitor(copyVisitor,
         network.network[i]));
-    boost::apply_visitor(resetVisitor, this->network.back());
+    (this->network.back())->Reset();
   }
 };
 

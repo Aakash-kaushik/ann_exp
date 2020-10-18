@@ -149,6 +149,12 @@ class Linear : Layer<InputDataType, OutputDataType>
   //! Modify the bias weights of the layer.
   OutputDataType& Bias() { return bias; }
 
+  size_t OutputHeight() const {return 0;}
+
+  size_t OutputWidth() const {return 0;}
+
+  double Loss() const {return 0;}
+
   //! Get the size of the weights.
   size_t WeightSize() const
   {

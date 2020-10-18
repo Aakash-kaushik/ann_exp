@@ -18,13 +18,13 @@
 #include "linear.hpp"
 #include "visitor/delete_visitor.hpp"
 //#include "visitor/delta_visitor.hpp"
-#include "visitor/output_height_visitor.hpp"
+//#include "visitor/output_height_visitor.hpp"
 //#include "visitor/output_parameter_visitor.hpp"
-#include "visitor/output_width_visitor.hpp"
-#include "visitor/reset_visitor.hpp"
-#include "visitor/weight_size_visitor.hpp"
+//#include "visitor/output_width_visitor.hpp"
+//#include "visitor/reset_visitor.hpp"
+//#include "visitor/weight_size_visitor.hpp"
 #include "visitor/copy_visitor.hpp"
-#include "visitor/loss_visitor.hpp"
+//#include "visitor/loss_visitor.hpp"
 
 #include <mlpack/methods/ann/init_rules/network_init.hpp>
 
@@ -476,19 +476,19 @@ class FFN
   //OutputParameterVisitor outputParameterVisitor;
 
   //! Locally-stored weight size visitor.
-  WeightSizeVisitor weightSizeVisitor;
+  //WeightSizeVisitor weightSizeVisitor;
 
   //! Locally-stored output width visitor.
-  OutputWidthVisitor outputWidthVisitor;
+  //OutputWidthVisitor outputWidthVisitor;
 
   //! Locally-stored output height visitor.
-  OutputHeightVisitor outputHeightVisitor;
+  //OutputHeightVisitor outputHeightVisitor;
 
   //! Locally-stored loss visitor
-  LossVisitor lossVisitor;
+  //LossVisitor lossVisitor;
 
   //! Locally-stored reset visitor.
-  ResetVisitor resetVisitor;
+  //ResetVisitor resetVisitor;
 
   //! Locally-stored delete visitor.
   DeleteVisitor deleteVisitor;
