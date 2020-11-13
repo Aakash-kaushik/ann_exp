@@ -16,8 +16,6 @@
 #include <mlpack/prereqs.hpp>
 #include <mlpack/methods/ann/regularizer/no_regularizer.hpp>
 
-#include "layer_types.hpp"
-
 #include "./base_class_layer.hpp"
 
 namespace mlpack {

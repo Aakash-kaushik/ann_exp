@@ -117,7 +117,6 @@ void Linear<InputDataType, OutputDataType, RegularizerType>::Forward(
 
 template<typename InputDataType, typename OutputDataType,
     typename RegularizerType>
-template<typename eT>
 void Linear<InputDataType, OutputDataType, RegularizerType>::Backward(
     const InputDataType& /* input */, const InputDataType& gy, OutputDataType& g)
 {
@@ -126,7 +125,6 @@ void Linear<InputDataType, OutputDataType, RegularizerType>::Backward(
 
 template<typename InputDataType, typename OutputDataType,
     typename RegularizerType>
-template<typename eT>
 void Linear<InputDataType, OutputDataType, RegularizerType>::Gradient(
     const InputDataType& input,
     const InputDataType& error,
