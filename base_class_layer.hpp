@@ -1,5 +1,4 @@
 #include <mlpack/prereqs.hpp>
-#include <iostream>
 
 namespace mlpack {
 namespace ann {
@@ -31,13 +30,7 @@ class Layer
 
   virtual OutputDataType const& Delta() const=0;
   
-  virtual OutputDataType& Delta()=0;
-
-  virtual size_t OutputHeight() const=0;
-
-  virtual size_t OutputWidth() const=0;
-
-  virtual double Loss() const=0;
+  virtual OutputDataType& Delta()=0; 
   
 };
 

@@ -16,6 +16,8 @@
 #include <mlpack/prereqs.hpp>
 #include <mlpack/methods/ann/regularizer/no_regularizer.hpp>
 
+#include "layer_types.hpp"
+
 #include "./base_class_layer.hpp"
 
 namespace mlpack {
@@ -35,14 +37,14 @@ template <
     typename OutputDataType = arma::mat,
     typename RegularizerType = NoRegularizer
 >
-class Linear : Layer<InputDataType, OutputDataType>
+class Linear: Layer<InputDataType, OutputDataType>
 {
  public:
   //! Create the Linear object.
   Linear();
-  
-  ~Linear(){}
 
+  //! Destructor
+  ~Linear(){}
   /**
    * Create the Linear layer object using the specified number of units.
    *
@@ -78,9 +80,7 @@ class Linear : Layer<InputDataType, OutputDataType>
    * @param input Input data used for evaluating the specified function.
    * @param output Resulting output activation.
    */
- 
-  void Forward(const InputDataType& input,
-               OutputDataType& output);
+  void Forward(const InputDataType& input, OutputDataType& output);
 
   /**
    * Ordinary feed backward pass of a neural network, calculating the function
@@ -91,7 +91,6 @@ class Linear : Layer<InputDataType, OutputDataType>
    * @param gy The backpropagated error.
    * @param g The calculated gradient.
    */
-
   void Backward(const InputDataType& /* input */,
                 const InputDataType& gy,
                 OutputDataType& g);
@@ -103,7 +102,6 @@ class Linear : Layer<InputDataType, OutputDataType>
    * @param error The calculated error.
    * @param gradient The calculated gradient.
    */
-
   void Gradient(const InputDataType& input,
                 const InputDataType& error,
                 OutputDataType& gradient);
@@ -149,12 +147,6 @@ class Linear : Layer<InputDataType, OutputDataType>
   //! Modify the bias weights of the layer.
   OutputDataType& Bias() { return bias; }
 
-  size_t OutputHeight() const {return 0;}
-
-  size_t OutputWidth() const {return 0;}
-
-  double Loss() const {return 0;}
-
   //! Get the size of the weights.
   size_t WeightSize() const
   {
@@ -164,9 +156,8 @@ class Linear : Layer<InputDataType, OutputDataType>
   /**
    * Serialize the layer
    */
-  
   //template<typename Archive>
-  //void serialize(Archive& ar, const unsigned int /* version */);
+  //void serialize(Archive& ar, const uint32_t /* version */);
 
  private:
   //! Locally-stored number of input units.

@@ -38,7 +38,7 @@ int main()
   constexpr double STOP_TOLERANCE = 1e-8;
 
   // In Armadillo rows represent features, columns represent data points.
-  std::cout << "random init data." << std::endl;
+  std::cout << "Random init data." << std::endl;
   // If dataset is not loaded correctly, exit.
 
   arma::mat dataset;

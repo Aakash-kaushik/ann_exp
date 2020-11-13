@@ -14,19 +14,18 @@
 #define MLPACK_METHODS_ANN_FFN_HPP
 
 #include <mlpack/prereqs.hpp>
-#include "base_class_layer.hpp" 
-#include "linear.hpp"
-#include "visitor/delete_visitor.hpp"
-//#include "visitor/delta_visitor.hpp"
-//#include "visitor/output_height_visitor.hpp"
-//#include "visitor/output_parameter_visitor.hpp"
-//#include "visitor/output_width_visitor.hpp"
-//#include "visitor/reset_visitor.hpp"
-//#include "visitor/weight_size_visitor.hpp"
-#include "visitor/copy_visitor.hpp"
-//#include "visitor/loss_visitor.hpp"
 
-#include <mlpack/methods/ann/init_rules/network_init.hpp>
+#include "visitor/delete_visitor.hpp"
+#include "visitor/delta_visitor.hpp"
+#include "visitor/output_height_visitor.hpp"
+#include "visitor/output_parameter_visitor.hpp"
+#include "visitor/output_width_visitor.hpp"
+#include "visitor/reset_visitor.hpp"
+#include "visitor/weight_size_visitor.hpp"
+#include "visitor/copy_visitor.hpp"
+#include "visitor/loss_visitor.hpp"
+
+#include "init_rules/network_init.hpp"
 
 #include <mlpack/methods/ann/layer/layer_types.hpp>
 #include <mlpack/methods/ann/layer/layer.hpp>
@@ -332,7 +331,7 @@ class FFN
 
   //! Serialize the model.
   template<typename Archive>
-  void serialize(Archive& ar, const unsigned int /* version */);
+  void serialize(Archive& ar, const uint32_t /* version */);
 
   /**
    * Perform the forward pass of the data in real batch mode.
@@ -451,7 +450,7 @@ class FFN
   bool reset;
 
   //! Locally-stored model modules.
-  std::vector<Layer* > network;
+  std::vector<LayerTypes<CustomLayers...> > network;
 
   //! The matrix of data points (predictors).
   arma::mat predictors;
@@ -468,31 +467,29 @@ class FFN
   //! The current error for the backward pass.
   arma::mat error;
 
-  
   //! Locally-stored delta visitor.
-  //DeltaVisitor deltaVisitor;
+  DeltaVisitor deltaVisitor;
 
   //! Locally-stored output parameter visitor.
-  //OutputParameterVisitor outputParameterVisitor;
+  OutputParameterVisitor outputParameterVisitor;
 
   //! Locally-stored weight size visitor.
-  //WeightSizeVisitor weightSizeVisitor;
+  WeightSizeVisitor weightSizeVisitor;
 
   //! Locally-stored output width visitor.
-  //OutputWidthVisitor outputWidthVisitor;
+  OutputWidthVisitor outputWidthVisitor;
 
   //! Locally-stored output height visitor.
-  //OutputHeightVisitor outputHeightVisitor;
+  OutputHeightVisitor outputHeightVisitor;
 
   //! Locally-stored loss visitor
-  //LossVisitor lossVisitor;
+  LossVisitor lossVisitor;
 
   //! Locally-stored reset visitor.
-  //ResetVisitor resetVisitor;
+  ResetVisitor resetVisitor;
 
   //! Locally-stored delete visitor.
   DeleteVisitor deleteVisitor;
-  
 
   //! The current evaluation mode (training or testing).
   bool deterministic;
@@ -512,7 +509,6 @@ class FFN
   //! Locally-stored copy visitor
   CopyVisitor<CustomLayers...> copyVisitor;
 
-  /*
   // The GAN class should have access to internal members.
   template<
     typename Model,
@@ -521,29 +517,11 @@ class FFN
     typename PolicyType
   >
   friend class GAN;
-  */
 }; // class FFN
 
 } // namespace ann
 } // namespace mlpack
-/*
-//! Set the serialization version of the FFN class.  Multiple template arguments
-//! makes this ugly...
-namespace boost {
-namespace serialization {
 
-template<typename OutputLayerType,
-         typename InitializationRuleType,
-         typename... CustomLayer>
-struct version<
-    mlpack::ann::FFN<OutputLayerType, InitializationRuleType, CustomLayer...>>
-{
-  BOOST_STATIC_CONSTANT(int, value = 2);
-};
-
-} // namespace serialization
-} // namespace boost
-*/
 // Include implementation.
 #include "ffn_impl.hpp"
 
