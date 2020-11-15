@@ -15,8 +15,8 @@
 
 #include <mlpack/prereqs.hpp>
 
-#include "visitor/delete_visitor.hpp"
-#include "visitor/delta_visitor.hpp"
+// #include "visitor/delete_visitor.hpp"
+// #include "visitor/delta_visitor.hpp"
 // #include "visitor/output_height_visitor.hpp"
 // #include "visitor/output_parameter_visitor.hpp"
 // #include "visitor/output_width_visitor.hpp"
@@ -450,7 +450,7 @@ class FFN
   bool reset;
 
   //! Locally-stored model modules.
-  std::vector<LayerTypes<CustomLayers...> > network;
+  std::vector<Layer* > network;
 
   //! The matrix of data points (predictors).
   arma::mat predictors;
@@ -468,7 +468,7 @@ class FFN
   arma::mat error;
 
   //! Locally-stored delta visitor.
-  DeltaVisitor deltaVisitor;
+  // DeltaVisitor deltaVisitor;
 
   //! Locally-stored output parameter visitor.
   // OutputParameterVisitor outputParameterVisitor;
@@ -489,7 +489,7 @@ class FFN
   // ResetVisitor resetVisitor;
 
   //! Locally-stored delete visitor.
-  DeleteVisitor deleteVisitor;
+  // DeleteVisitor deleteVisitor;
 
   //! The current evaluation mode (training or testing).
   bool deterministic;
@@ -510,13 +510,14 @@ class FFN
   CopyVisitor<CustomLayers...> copyVisitor;
 
   // The GAN class should have access to internal members.
-  template<
+  /* template<
     typename Model,
     typename InitializerType,
     typename NoiseType,
     typename PolicyType
   >
-  friend class GAN;
+  friend class GAN; */
+
 }; // class FFN
 
 } // namespace ann
