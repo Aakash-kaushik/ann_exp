@@ -35,7 +35,7 @@ template <
     typename OutputDataType = arma::mat,
     typename RegularizerType = NoRegularizer
 >
-class Linear: Layer<InputDataType, OutputDataType>
+class Linear: public Layer<InputDataType, OutputDataType>
 {
  public:
   //! Create the Linear object.

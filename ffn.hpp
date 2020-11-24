@@ -25,13 +25,16 @@
 #include "visitor/copy_visitor.hpp"
 // #include "visitor/loss_visitor.hpp"
 
-#include "init_rules/network_init.hpp"
+#include <mlpack/methods/ann/init_rules/network_init.hpp>
 
 #include <mlpack/methods/ann/layer/layer_types.hpp>
 #include <mlpack/methods/ann/layer/layer.hpp>
 #include <mlpack/methods/ann/init_rules/random_init.hpp>
 #include <mlpack/methods/ann/layer/layer_traits.hpp>
 #include <ensmallen.hpp>
+
+// base class that defines "Layer"
+#include "base_class_layer.hpp"
 
 namespace mlpack {
 namespace ann /** Artificial Neural Network. */ {
@@ -450,7 +453,7 @@ class FFN
   bool reset;
 
   //! Locally-stored model modules.
-  std::vector<Layer* > network;
+  std::vector<Layer*> network;
 
   //! The matrix of data points (predictors).
   arma::mat predictors;
