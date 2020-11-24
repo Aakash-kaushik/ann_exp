@@ -46,7 +46,7 @@ template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>
 FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::~FFN()
 {
-  for (auto it = network.begin(); it != network.end() ++it)
+  for (auto it = network.begin(); it != network.end(); ++it)
   {
     delete *it;
   }
@@ -520,46 +520,46 @@ void FFN<OutputLayerType, InitializationRuleType,
       network[network.size() - 1]);
 }
 
-template<typename OutputLayerType, typename InitializationRuleType,
-         typename... CustomLayers>
-template<typename Archive>
-void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::serialize(
-    Archive& ar, const uint32_t /* version */)
-{
-  ar(CEREAL_NVP(parameter));
-  ar(CEREAL_NVP(width));
-  ar(CEREAL_NVP(height));
-
-  ar(CEREAL_NVP(reset));
-
-  // Be sure to clear other layers before loading.
-  if (cereal::is_loading<Archive>())
-  {
-    for (auto it = network.begin(); it != network.end() ++it)
-    {
-      delete *it;
-    }
-    network.clear();
-  }
-
-  ar(CEREAL_VECTOR_VARIANT_POINTER(network));
-
-  // If we are loading, we need to initialize the weights.
-  if (cereal::is_loading<Archive>())
-  {
-    size_t offset = 0;
-    for (size_t i = 0; i < network.size(); ++i)
-    {
-      offset += boost::apply_visitor(WeightSetVisitor(parameter, offset),
-          network[i]);
-
-      network[i]->Reset();
-    }
-
-    deterministic = true;
-    ResetDeterministic();
-  }
-}
+//template<typename OutputLayerType, typename InitializationRuleType,
+//         typename... CustomLayers>
+//template<typename Archive>
+//void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::serialize(
+//    Archive& ar, const uint32_t /* version */)
+//{
+//  ar(CEREAL_NVP(parameter));
+//  ar(CEREAL_NVP(width));
+//  ar(CEREAL_NVP(height));
+//
+//  ar(CEREAL_NVP(reset));
+//
+//  // Be sure to clear other layers before loading.
+//  if (cereal::is_loading<Archive>())
+//  {
+//    for (auto it = network.begin(); it != network.end(); ++it)
+//    {
+//      delete *it;
+//    }
+//    network.clear();
+//  }
+//
+//  ar(CEREAL_VECTOR_VARIANT_POINTER(network));
+//
+//  // If we are loading, we need to initialize the weights.
+//  if (cereal::is_loading<Archive>())
+//  {
+//    size_t offset = 0;
+//    for (size_t i = 0; i < network.size(); ++i)
+//    {
+//      offset += boost::apply_visitor(WeightSetVisitor(parameter, offset),
+//          network[i]);
+//
+//      network[i]->Reset();
+//    }
+//
+//    deterministic = true;
+//    ResetDeterministic();
+//  }
+//}
 
 template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>
