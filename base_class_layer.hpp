@@ -1,7 +1,7 @@
-#include <mlpack/prereqs.hpp>
+#ifndef BASE_CLASS_LAYER_HPP
+#define BASE_CLASS_LAYER_HPP
 
-namespace mlpack {
-namespace ann {
+#include <mlpack/prereqs.hpp>
 
 template<typename InputDataType,
          typename OutputDataType>
@@ -42,5 +42,4 @@ class Layer
 
 };
 
-}
-}
+#endif

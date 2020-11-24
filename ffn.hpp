@@ -453,7 +453,7 @@ class FFN
   bool reset;
 
   //! Locally-stored model modules.
-  std::vector<Layer*> network;
+  std::vector<Layer<arma::mat, arma::mat>* > network;
 
   //! The matrix of data points (predictors).
   arma::mat predictors;
