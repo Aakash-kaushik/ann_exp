@@ -24,7 +24,8 @@ class Layer
                         const InputDataType&,
                         OutputDataType&)=0;
 
-  virtual OutputDataType const& OutputParameter() const=0;
+  virtual OutputDataType const& OutputParameter()
+      const=0;
 
   virtual OutputDataType& OutputParameter()=0;
 
