@@ -15,8 +15,8 @@
 // In case it hasn't been included yet.
 #include "ffn.hpp"
 
-#include "visitor/forward_visitor.hpp"
-#include "visitor/backward_visitor.hpp"
+// #include "visitor/forward_visitor.hpp"
+// #include "visitor/backward_visitor.hpp"
 #include "visitor/deterministic_set_visitor.hpp"
 #include "visitor/gradient_set_visitor.hpp"
 #include "visitor/gradient_visitor.hpp"
@@ -171,12 +171,12 @@ void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Forward(
     const size_t begin,
     const size_t end)
 {
-  boost::apply_visitor(ForwardVisitor(inputs,(network[begin]->OutputParameter())), network[begin]);
+  network[begin]->Forward(inputs,(network[begin]->OutputParameter()));
 
   for (size_t i = 1; i < end - begin + 1; ++i)
   {
-    boost::apply_visitor(ForwardVisitor((network[begin + i - 1]->OutputParameter()),
-        (network[begin + i]->OutputParameter())), network[begin + i]);
+    network[begin + i]->Forward((network[begin + i - 1]->OutputParameter()),
+        (network[begin + i]->OutputParameter()));
   }
 
   results = network[end]->OutputParameter();
@@ -434,9 +434,7 @@ template<typename InputType>
 void FFN<OutputLayerType, InitializationRuleType,
          CustomLayers...>::Forward(const InputType& input)
 {
-  boost::apply_visitor(ForwardVisitor(input,
-      (network.front()->OutputParameter())),
-      network.front());
+  network.front()->Forward(input,(network.front()->OutputParameter()));
 
   if (!reset)
   {
@@ -462,8 +460,8 @@ void FFN<OutputLayerType, InitializationRuleType,
       boost::apply_visitor(SetInputHeightVisitor(height), network[i]);
     }
 
-    boost::apply_visitor(ForwardVisitor((network[i - 1]->OutputParameter()),
-        (network[i]->OutputParameter())), network[i]);
+    network[i]->Forward((network[i - 1]->OutputParameter()),
+        (network[i]->OutputParameter()));
 
     if (!reset)
     {
@@ -489,15 +487,13 @@ template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>
 void FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::Backward()
 {
-  boost::apply_visitor(BackwardVisitor((network.back()->OutputParameter()), error,
-      (network.back()->Delta())), network.back());
+  network.back()->Backward((network.back()->OutputParameter()), error, (network.back()->Delta()));
 
   for (size_t i = 2; i < network.size(); ++i)
   {
-    boost::apply_visitor(BackwardVisitor((network[network.size() - i]->OutputParameter()),
+    network[network.size() - i]->Backward((network[network.size() - i]->OutputParameter()),
         (network[network.size() - i + 1]->Delta()),
-        (network[network.size() - i]->Delta())),
-        network[network.size() - i]);
+        (network[network.size() - i]->Delta()));
   }
 }
 
@@ -584,7 +580,7 @@ void FFN<OutputLayerType, InitializationRuleType,
   std::swap(gradient, network.gradient);
 };
 
-template<typename OutputLayerType, typename InitializationRuleType,
+/*template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>
 FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::FFN(
     const FFN& network):
@@ -604,6 +600,7 @@ FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::FFN(
     outputParameter(network.outputParameter),
     gradient(network.gradient)
 {
+  
   // Build new layers according to source network
   for (size_t i = 0; i < network.network.size(); ++i)
   {
@@ -611,6 +608,7 @@ FFN<OutputLayerType, InitializationRuleType, CustomLayers...>::FFN(
     (this->network.back())->Reset();
   }
 };
+*/
 
 template<typename OutputLayerType, typename InitializationRuleType,
          typename... CustomLayers>

@@ -22,7 +22,7 @@
 // #include "visitor/output_width_visitor.hpp"
 // #include "visitor/reset_visitor.hpp"
 // #include "visitor/weight_size_visitor.hpp"
-#include "visitor/copy_visitor.hpp"
+// #include "visitor/copy_visitor.hpp"
 // #include "visitor/loss_visitor.hpp"
 
 #include <mlpack/methods/ann/init_rules/network_init.hpp>
@@ -75,7 +75,7 @@ class FFN
       InitializationRuleType initializeRule = InitializationRuleType());
 
   //! Copy constructor.
-  FFN(const FFN&);
+  //FFN(const FFN&);
 
   //! Move constructor.
   FFN(FFN&&);
@@ -510,7 +510,7 @@ class FFN
   arma::mat gradient;
 
   //! Locally-stored copy visitor
-  CopyVisitor<CustomLayers...> copyVisitor;
+  //CopyVisitor<CustomLayers...> copyVisitor;
 
   // The GAN class should have access to internal members.
   /* template<

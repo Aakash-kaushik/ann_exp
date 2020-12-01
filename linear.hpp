@@ -151,6 +151,10 @@ class Linear: public Layer<InputDataType, OutputDataType>
     return (inSize * outSize) + outSize;
   }
 
+  void LayerName()
+  {
+    return "linear";
+  }
   /**
    * Serialize the layer
    */
