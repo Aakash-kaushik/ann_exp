@@ -3,7 +3,7 @@
 #include "../linear.hpp"
 #include <mlpack/core/data/split_data.hpp>
 #include "../ffn.hpp"
-#include <mlpack/methods/ann/init_rules/he_init.hpp>
+// #include <mlpack/methods/ann/init_rules/he_init.hpp>
 #include <ensmallen.hpp>
 #include <chrono>
 
@@ -60,7 +60,7 @@ int main()
   arma::mat validY = validData.row(0);
 
   auto start = std::chrono::steady_clock::now();
-  FFN<MeanSquaredError<>, HeInitialization> model;
+  FFN<MeanSquaredError<> > model;
   model.Add<Linear<>>(64, H1);
   model.Add<Linear<>>(H1, H2);
   model.Add<Linear<>>(H2, H3);

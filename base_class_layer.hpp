@@ -55,6 +55,7 @@ class Layer
   virtual bool HasDeterministic() { return false; }
 
   virtual std::string LayerName() { return "baseLayer"; }
+  
 };
 
 #endif
