@@ -151,9 +151,18 @@ class Linear: public Layer<InputDataType, OutputDataType>
     return (inSize * outSize) + outSize;
   }
 
-  void LayerName()
+  std::string LayerName()
   {
     return "linear";
+  }
+
+  size_t GradientSet(arma::mat& gradient,
+                     size_t offset=0)
+  {
+    gradient = arma::mat(gradient.memptr() + offset,
+        weights.n_rows, weights.n_cols, false, false);
+
+    return weights.n_elem;
   }
   /**
    * Serialize the layer

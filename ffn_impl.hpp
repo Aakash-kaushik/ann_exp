@@ -18,10 +18,10 @@
 // #include "visitor/forward_visitor.hpp"
 // #include "visitor/backward_visitor.hpp"
 #include "visitor/deterministic_set_visitor.hpp"
-#include "visitor/gradient_set_visitor.hpp"
-#include "visitor/gradient_visitor.hpp"
-#include "visitor/set_input_height_visitor.hpp"
-#include "visitor/set_input_width_visitor.hpp"
+// #include "visitor/gradient_set_visitor.hpp"
+// #include "visitor/gradient_visitor.hpp"
+// #include "visitor/set_input_height_visitor.hpp"
+// #include "visitor/set_input_width_visitor.hpp"
 
 namespace mlpack {
 namespace ann /** Artificial Neural Network. */ {
@@ -410,9 +410,9 @@ template<typename OutputLayerType, typename InitializationRuleType,
 void FFN<OutputLayerType, InitializationRuleType,
          CustomLayers...>::ResetDeterministic()
 {
-  DeterministicSetVisitor deterministicSetVisitor(deterministic);
-  std::for_each(network.begin(), network.end(),
-      boost::apply_visitor(deterministicSetVisitor));
+  //DeterministicSetVisitor deterministicSetVisitor(deterministic);
+  //std::for_each(network.begin(), network.end(),
+  //    boost::apply_visitor(deterministicSetVisitor));
 }
 
 template<typename OutputLayerType, typename InitializationRuleType,
@@ -423,8 +423,7 @@ void FFN<OutputLayerType, InitializationRuleType,
   size_t offset = 0;
   for (size_t i = 0; i < network.size(); ++i)
   {
-    offset += boost::apply_visitor(GradientSetVisitor(gradient, offset),
-        network[i]);
+    offset += network[i]->GradientSet(gradient, offset);
   }
 }
 
@@ -453,11 +452,18 @@ void FFN<OutputLayerType, InitializationRuleType,
   {
     if (!reset)
     {
-      // Set the input width.
-      boost::apply_visitor(SetInputWidthVisitor(width), network[i]);
-
-      // Set the input height.
-      boost::apply_visitor(SetInputHeightVisitor(height), network[i]);
+      // False for linear layer and that's why commented out.
+      if (network[i]->HasInputWidth())
+      {
+        // Set the input width.
+        // boost::apply_visitor(SetInputWidthVisitor(width), network[i]);
+      }
+      // False for linear layer and that's why commented out.
+      if (network[i]->HasInputHeight())
+      {
+        // Set the input height.
+        // boost::apply_visitor(SetInputHeightVisitor(height), network[i]);
+      }
     }
 
     network[i]->Forward((network[i - 1]->OutputParameter()),
@@ -503,17 +509,16 @@ template<typename InputType>
 void FFN<OutputLayerType, InitializationRuleType,
          CustomLayers...>::Gradient(const InputType& input)
 {
-  boost::apply_visitor(GradientVisitor(input,
-      (network[1]->Delta())), network.front());
+  network.front()->Gradient(input, (network[1]->Delta()), (network[1]->Gradient()));
 
   for (size_t i = 1; i < network.size() - 1; ++i)
   {
-    boost::apply_visitor(GradientVisitor((network[i - 1]->OutputParameter()),
-        (network[i + 1]->Delta())), network[i]);
+    network[i]->Gradient((network[i - 1]->OutputParameter()), (network[i + 1]->Delta()),
+        (network[i]->Gradient()));
   }
 
-  boost::apply_visitor(GradientVisitor((network[network.size() - 2]->OutputParameter()), error),
-      network[network.size() - 1]);
+  network[network.size() - 1]->Gradient((network[network.size() - 2]->OutputParameter()),
+      error, (network[network.size() - 1]->Gradient()));
 }
 
 //template<typename OutputLayerType, typename InitializationRuleType,

@@ -41,6 +41,20 @@ class Layer
 
   virtual size_t OutputHeight() { return 0; }
 
+  virtual bool HasInputWidth() { return false; }
+
+  virtual bool HasInputHeight() { return false; }
+
+  virtual OutputDataType const& Gradient() const=0;
+  
+  virtual OutputDataType& Gradient()=0;
+
+  virtual size_t GradientSet(arma::mat&,
+                             size_t)=0;
+  
+  virtual bool HasDeterministic() { return false; }
+
+  virtual std::string LayerName() { return "baseLayer"; }
 };
 
 #endif
