@@ -19,6 +19,7 @@
 // #include "../visitor/weight_size_visitor.hpp"
 // #include "../visitor/weight_set_visitor.hpp"
 #include "init_rules_traits.hpp"
+#include "base_class_layer.hpp"
 
 #include <mlpack/methods/ann/layer/layer_types.hpp>
 
@@ -54,7 +55,7 @@ class NetworkInitialization
    * @param parameterOffset Offset for network paramater, default 0.
    */
   template <typename eT>
-  void Initialize(const std::vector<LayerTypes<CustomLayers...> >& network,
+  void Initialize(const std::vector<Layer<arma::mat, arma::mat>* >& network,
                   arma::Mat<eT>& parameter, size_t parameterOffset = 0)
   {
     // Determine the number of parameter/weights of the given network.
@@ -73,7 +74,7 @@ class NetworkInitialization
       {
         // Initialize the layer with the specified parameter/weight
         // initialization rule.
-        const size_t weight = network[i]->Parameters().n_elem();
+        const size_t weight = network[i]->Parameters().n_elem;
         arma::Mat<eT> tmp = arma::mat(parameter.memptr() + offset,
             weight, 1, false, false);
         initializeRule.Initialize(tmp, tmp.n_elem, 1);
