@@ -3,9 +3,10 @@
 #include "../linear.hpp"
 #include <mlpack/core/data/split_data.hpp>
 #include "../ffn.hpp"
-// #include <mlpack/methods/ann/init_rules/he_init.hpp>
+#include <mlpack/methods/ann/init_rules/he_init.hpp>
 #include <ensmallen.hpp>
 #include <chrono>
+#include "../linear.hpp"
 
 using namespace mlpack;
 using namespace mlpack::ann;
@@ -20,11 +21,11 @@ double MSE(arma::mat& pred, arma::mat& Y)
 int main()
 {
   //! - H1: The number of neurons in the 1st layer.
-  constexpr int H1 = 64;
+  constexpr size_t H1 = 64;
   //! - H2: The number of neurons in the 2nd layer.
-  constexpr int H2 = 128;
+  constexpr size_t H2 = 128;
   //! - H3: The number of neurons in the 3rd layer.
-  constexpr int H3 = 64;
+  constexpr size_t H3 = 64;
 
 
   // Number of epochs for training.
@@ -60,8 +61,8 @@ int main()
   arma::mat validY = validData.row(0);
 
   auto start = std::chrono::steady_clock::now();
-  FFN<MeanSquaredError<> > model;
-  model.Add<Linear<>>(64, H1);
+  FFN<MeanSquaredError<>, HeInitialization> model;
+  model.Add<Linear<>>(size_t(64), H1);
   model.Add<Linear<>>(H1, H2);
   model.Add<Linear<>>(H2, H3);
   model.Add<Linear<>>(H3, H3);

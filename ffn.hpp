@@ -25,7 +25,7 @@
 // #include "visitor/copy_visitor.hpp"
 // #include "visitor/loss_visitor.hpp"
 
-#include <mlpack/methods/ann/init_rules/network_init.hpp>
+#include "network_init.hpp"
 
 #include <mlpack/methods/ann/layer/layer_types.hpp>
 #include <mlpack/methods/ann/layer/layer.hpp>
@@ -35,6 +35,7 @@
 
 // base class that defines "Layer"
 #include "base_class_layer.hpp"
+#include "linear.hpp"
 
 namespace mlpack {
 namespace ann /** Artificial Neural Network. */ {
