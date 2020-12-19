@@ -49,12 +49,12 @@ int main()
   arma::mat trainData, validData;
   data::Split(dataset, trainData, validData, 0.1);
 
+  std::cout<<"trainData size: "<<arma::size(trainData)<<"\t"<<"validData size "<<arma::size(validData);
+
   // The train and valid datasets contain both - the features as well as the
   // prediction. Split these into separate matrices.
-  arma::mat trainX =
-      trainData.submat(1, 0, trainData.n_rows - 1, trainData.n_cols - 1);
-  arma::mat validX =
-      validData.submat(1, 0, validData.n_rows - 1, validData.n_cols - 1);
+  arma::mat trainX = trainData.submat(1, 0, trainData.n_rows - 1, trainData.n_cols - 1);
+  arma::mat validX = validData.submat(1, 0, validData.n_rows - 1, validData.n_cols - 1);
 
   // Create prediction data for training and validatiion datasets.
   arma::mat trainY = trainData.row(0);
